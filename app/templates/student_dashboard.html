@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <style>
+    body {
+        height: 100%;
+       
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        /* Add the background image */
+       background-color :  #e6e6ff;
+        /* Adjust background properties as needed */
+        background-size: cover; /* Adjust as needed */
+        background-repeat: no-repeat; /* No repeat */
+        background-position: center; /* Center the background */
+        background-attachment: fixed; /* Fixed background */
+       }
+       .clss
+       {
+        font-size : 20px;
+        line-height : 1.5;
+       
+       }
+       .css
+       {
+         font-size : 25px;
+       }
+       .clss1
+       {
+         font-weight : 2;
+         font-size : 22px;
+         color : #000033;
+       }
+       .drop
+       {
+          width : 150px;
+          height : 30px;
+          border-radius : 5%;
+          font-size : 17px;
+          margin-right : 20px;
+       }
+       .h1
+       { 
+          margin-top : 20px;
+          padding-left : 100px;
+          font-size : 40px;
+       }
+         #winnersButton
+        {
+          
+           margin-top : 20px;
+           font-size : 16px;
+           padding : 6px 10px;
+           border-radius : 7%;
+        }
+        #winnersList
+        {
+            margin-left : 650px;
+            border : 2px solid black;
+            padding-left : 100px;
+            padding-right : 100px;
+            margin-right : 700px;
+            border-radius : 1%;
+            margin-top : 10px;
+            
+        }
+      
+       </style>
+</head>
+<body>
+    <span class = "h1">Welcome to the Student Dashboard</span>
+      <span style = "margin-left : 1600px"><form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" style = "font-size : 18px">Logout</button>
+    </form>
+    </span>
+    <br>
+    
+    <!-- Display events -->
+    <h1>Available Events</h1>
+    <ul>
+            {% for event in events %}
+    <li>
+        <strong><span class = "css">{{ event.Name }}</span></strong> - <span class = "css">{{ event.EDate }}</span><br>
+        <br>
+        <span class = "clss">Description: {{ event.description }}</span><br>
+        <br>
+        <span class = "clss1"><b>Venue: {{ event.venue }}</b></span><br><br>
+        <form method="post">
+            {% csrf_token %}
+            <input class = "clss" type="hidden" name="event_id" value="{{ event.EID }}">
+            <select name="registration_type" class = "drop">
+                <option class = "options" value="participant">Participant</option>
+                <option class = "options" value="volunteer">Volunteer</option>
+            </select>
+            <button type="submit" class = "drop">Register</button><br><br>
+        </form>
+    </li>
+{% endfor %}
+
+    </ul>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+   
+    <br>
+    <button id="winnersButton">Show Winners</button>
+    <br>
+    <div id="winnersList" style = "display : none;">
+        <h2 style = "padding-left : 50px">Winners:</h2>
+        <ul>
+            {% for event, event_winners in winners.items %}
+            <li>
+                <strong><span style = "font-size :  20px">{{ event.Name }}</span></strong> <!-- Display event name -->
+                <br><br>
+                <ul>
+                    {% for winner in event_winners %}
+                    <li style = "font-size : 20px">{{ winner.position }}: {% if winner.student %}{{ winner.student.Name }}{% elif winner.participant %}{{ winner.participant.Name }}{% endif %}</li> <!-- Display winner's name -->
+                    {% endfor %}
+                </ul>
+                <br>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        document.getElementById('winnersButton').addEventListener('click', function() {
+            var winnersList = document.getElementById('winnersList');
+            if (winnersList.style.display === 'none') {
+                winnersList.style.display = 'block';
+            } else {
+                winnersList.style.display = 'none';
+            }
+        });
+    </script>
+
+    <!-- Logout link -->
+ 
+</body>
+</html>
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup</title>
+    <style>
+        body {
+        height: 100%;
+        color: ;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color : #F0F8FF;
+        /* Add the background image */
+       
+        /* Adjust background properties as needed */
+        background-size: cover; /* Adjust as needed */
+        background-repeat: no-repeat; /* No repeat */
+        background-position: center; /* Center the background */
+        background-attachment: fixed; /* Fixed background */
+    }
+        form {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            font-size : 20px;
+        }
+        h2 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        input[type="text"], input[type="email"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        hr {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1 style = "font-size: 2.5em">Welcome to University Fest!!!</h1>
+    <h1 >Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <hr>
+    <h1 >Signup</h1>
+    <form method="get" id="signupForm">
+        <select name="signup_option" id="signup_option">
+            <option value="" disabled selected>Select Signup Option</option>
+            <option value="student">Student</option>
+            <option value="participant">Participant</option>
+            <option value="organizer">Organizer</option>
+        </select>
+        <button type="submit">Signup</button>
+    </form>
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var signupOption = document.getElementById("signup_option").value;
+            if (signupOption) {
+                window.location.href = "/signup/" + signupOption + "/";
+            }
+        });
+    </script>
+</body>
+</html>
+
